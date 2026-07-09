@@ -32,13 +32,9 @@ func srcTalent(data []Char, keyword string) []Char {
 	return result
 }
 
-func main() {
-
+func fetch(link string) Resp {
 	var data Resp
-	reader := bufio.NewReader(os.Stdin)
-
-	res, err := http.Get("https://rickandmortyapi.com/api/character")
-
+	res, err := http.Get(link)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -46,14 +42,18 @@ func main() {
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
-
 	err = json.Unmarshal(body, &data)
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
+	return data
+}
+
+func main() {
+
+	data := fetch("https://rickandmortyapi.com/api/character")
+	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Println("Masukan nama : ")
 	keyword, _ := reader.ReadString('\n')
@@ -69,6 +69,5 @@ func main() {
 	fmt.Println("Hasil pencarian : ")
 	for _, item := range result {
 		fmt.Println("- ", item.Name)
-		return
 	}
 }
