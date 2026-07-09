@@ -52,11 +52,15 @@ func fetch(link string) Resp {
 
 func main() {
 
+	fmt.Println()
 	data := fetch("https://rickandmortyapi.com/api/character")
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Println("Masukan nama : ")
 	keyword, _ := reader.ReadString('\n')
+	if strings.TrimSpace(keyword) == "0" {
+		os.Exit(0)
+	}
 	keyword = strings.TrimSpace((keyword))
 
 	result := srcTalent(data.Results, keyword)
@@ -69,5 +73,8 @@ func main() {
 	fmt.Println("Hasil pencarian : ")
 	for _, item := range result {
 		fmt.Println("- ", item.Name)
+		fmt.Println()
+		fmt.Println("0 > untuk exit")
+		main()
 	}
 }
